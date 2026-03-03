@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -24,6 +24,6 @@ public class Costumer {
     private String cpf;
     private String phoneNumber;
 
-    private LocalDateTime registerData;
+    private LocalDate registerData;
 
 }
