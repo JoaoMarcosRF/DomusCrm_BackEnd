@@ -1,26 +1,29 @@
 package com.domus.api.model.broker;
 
+import com.domus.api.model.shared.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@SuperBuilder
 
 
 @Entity
 @Table(name = "brokers")
-public class Broker {
+@NoArgsConstructor
+public class Broker extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String email;
-    private String password;
-    private String creci;
-    private String phoneNumber;
-
+    private String CRECI;
     private BrokerStatus brokerStatus;
+
 }
