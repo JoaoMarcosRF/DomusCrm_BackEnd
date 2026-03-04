@@ -1,6 +1,7 @@
 package com.domus.api.model.property;
 
 import com.domus.api.model.address.Address;
+import com.domus.api.model.broker.Broker;
 import com.domus.api.model.image.Image;
 import com.domus.api.model.lead.Lead;
 import jakarta.persistence.*;
@@ -39,12 +40,17 @@ public class Property {
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "property",  cascade = CascadeType.ALL)
+    private List<Lead> leads = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "property",  cascade = CascadeType.ALL)
-    private List<Lead> leads = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "broker_id")
+    private Broker broker;
+
 
 
     @Enumerated(EnumType.STRING)
