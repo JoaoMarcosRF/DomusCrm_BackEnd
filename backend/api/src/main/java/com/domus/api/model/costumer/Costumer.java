@@ -21,10 +21,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Costumer extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String cpf;
     private LocalDate registerData;
 

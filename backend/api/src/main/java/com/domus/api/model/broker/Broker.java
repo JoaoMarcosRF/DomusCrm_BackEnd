@@ -1,6 +1,8 @@
 package com.domus.api.model.broker;
 
+import com.domus.api.model.lead.Lead;
 import com.domus.api.model.property.Property;
+import com.domus.api.model.property.PropertyPorpuse;
 import com.domus.api.model.shared.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,14 +25,15 @@ import java.util.List;
 @NoArgsConstructor
 public class Broker extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String CRECI;
+    private String password;
 
     @OneToMany(mappedBy = "broker", cascade = CascadeType.ALL)
-    private List<Property> property = new ArrayList<>();
+    private List<Property> properties = new ArrayList<>();
+
+    @OneToMany(mappedBy = "broker", cascade = CascadeType.ALL)
+    private List<Lead> leads = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private BrokerRole brokerRole;
