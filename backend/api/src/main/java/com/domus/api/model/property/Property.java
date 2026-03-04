@@ -30,6 +30,8 @@ public class Property {
     private BigDecimal footage;
 
     private LocalDate registerDate;
+
+    @Enumerated(EnumType.STRING)
     private PropertyPorpuse propertyPorpuse;
 
 }

@@ -19,5 +19,7 @@ public class Lead {
 
     private LocalDate interestDate;
     private String message;
+
+    @Enumerated(EnumType.STRING)
     private LeadStatus leadStatus;
 }

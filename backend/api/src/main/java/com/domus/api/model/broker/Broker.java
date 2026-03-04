@@ -24,6 +24,8 @@ public class Broker extends User {
     private Long id;
 
     private String CRECI;
+
+    @Enumerated(EnumType.STRING)
     private BrokerRole brokerRole;
 
 }
