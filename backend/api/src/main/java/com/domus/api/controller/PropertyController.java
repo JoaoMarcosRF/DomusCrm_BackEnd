@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/property")
@@ -22,8 +23,18 @@ public class PropertyController {
         return ResponseEntity.ok("Successfully create!");
     }
 
+    @GetMapping()
+    public String getHome(){
+        return "ONLINE";
+    }
+
     @GetMapping("/all")
     public List<Property> findAll() {
         return service.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Property> findById(@PathVariable Long id) {
+        return service.findById(id);
     }
 }

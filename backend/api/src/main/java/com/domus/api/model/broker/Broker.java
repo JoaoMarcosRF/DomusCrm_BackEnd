@@ -16,13 +16,10 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@SuperBuilder
-
 
 @Entity
 @Table(name = "brokers")
-@NoArgsConstructor
+
 public class Broker extends User {
 
 

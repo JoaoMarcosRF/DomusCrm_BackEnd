@@ -29,7 +29,7 @@ public class Address {
     //criar uma classe cep
     private String cep;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
-    private List<Property> properties = new ArrayList<>();
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    private List<Property> property = new ArrayList<>();
 
 }

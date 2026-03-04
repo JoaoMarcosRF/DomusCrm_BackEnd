@@ -1,15 +1,20 @@
 package com.domus.api.model.shared;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@MappedSuperclass
-
-
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "users")
 public abstract class User {
 
     @Id
