@@ -1,5 +1,6 @@
 package com.domus.api.controller.address;
 
+import com.domus.api.dto.AddressRequest;
 import com.domus.api.model.address.Address;
 import com.domus.api.model.property.Property;
 import com.domus.api.service.address.AddressService;
@@ -19,9 +20,9 @@ public class AddressController {
     }
 
     @PostMapping()
-    public ResponseEntity<Address> addAddress(@RequestBody Address address){
-        service.save(address);
-        return ResponseEntity.ok().body(address);
+    public ResponseEntity<AddressRequest> addAddress(@RequestBody AddressRequest request){
+        service.save(request);
+        return ResponseEntity.ok().body(request);
     }
 
     @GetMapping("/{id}")

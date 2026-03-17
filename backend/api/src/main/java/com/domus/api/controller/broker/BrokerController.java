@@ -1,5 +1,6 @@
 package com.domus.api.controller.broker;
 
+import com.domus.api.dto.BrokerRequest;
 import com.domus.api.model.broker.Broker;
 import com.domus.api.model.property.Property;
 import com.domus.api.service.broker.BrokerService;
@@ -19,9 +20,9 @@ public class BrokerController {
     }
 
     @PostMapping()
-    public ResponseEntity<Broker> addBroker(@RequestBody Broker broker) {
-        service.save(broker);
-        return ResponseEntity.ok().body(broker);
+    public ResponseEntity<BrokerRequest> addBroker(@RequestBody BrokerRequest request) {
+        service.save(request);
+        return ResponseEntity.ok().body(request);
     }
 
     @GetMapping("/{id}")

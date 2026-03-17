@@ -17,7 +17,7 @@ public class Image {
     private Long id;
 
     private String url;
-    private int displayOrder;
+    private Integer displayOrder;
 
     private Boolean isPrincipal;
 
@@ -25,5 +25,4 @@ public class Image {
     @JoinColumn(name = "property_id",   nullable = false)
     @JsonIgnore
     private Property property;
-
 }

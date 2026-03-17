@@ -48,21 +48,18 @@ public class Property {
     private LocalDate registerDate;
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "property",  cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Lead> leads = new ArrayList<>();
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "address_id",  nullable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", nullable = true)
     private Address address;
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "broker_id",  nullable = true)
-
     private Broker broker;
-
-
-
-
 }

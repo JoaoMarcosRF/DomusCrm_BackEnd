@@ -1,5 +1,6 @@
 package com.domus.api.controller.image;
 
+import com.domus.api.dto.ImageRequest;
 import com.domus.api.model.image.Image;
 import com.domus.api.service.image.ImageService;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +12,17 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/image")
 public class ImageController {
+
     private final ImageService service;
 
-    public ImageController(ImageService service){this.service = service;}
+    public ImageController(ImageService service){
+        this.service = service;
+    }
 
     @PostMapping()
-    public ResponseEntity<Image> addImage(@RequestBody Image image){
-        service.save(image);
-        return ResponseEntity.ok().body(image);
+    public ResponseEntity<ImageRequest> addImage(@RequestBody ImageRequest dto){
+        service.save(dto);
+        return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping("/{id}")

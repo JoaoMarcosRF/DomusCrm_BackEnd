@@ -1,7 +1,12 @@
 package com.domus.api.service.broker;
 
+import com.domus.api.dto.BrokerRequest;
 import com.domus.api.model.broker.Broker;
+import com.domus.api.model.lead.Lead;
+import com.domus.api.model.property.Property;
 import com.domus.api.repository.broker.BrokerRepository;
+import com.domus.api.repository.lead.LeadRepository;
+import com.domus.api.repository.property.PropertyRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -18,20 +23,34 @@ public class BrokerService {
 
 
     private final BrokerRepository repository;
+    private final PropertyRepository propertyRepository;
+    private final LeadRepository leadRepository;
 
-    public BrokerService(BrokerRepository repository) {
+    public BrokerService(BrokerRepository repository, PropertyRepository propertyRepository, LeadRepository leadRepository) {
         this.repository = repository;
+        this.propertyRepository = propertyRepository;
+        this.leadRepository = leadRepository;
     }
 
-    public <S extends Broker> S save(S entity) {
-        if (entity.getId() == null) {
-            entityManager.persist(entity);
+    public Broker save(BrokerRequest request) {
+
+        Broker broker = new Broker();
+        broker.setName(request.name());
+        broker.setEmail(request.email());
+        broker.setPhoneNumber(request.phoneNumber());
+        broker.setPassword(request.password());
+        broker.setCRECI(request.CRECI());
+
+        if(request.proprietiesIds() != null){
+            List<Property> properties = propertyRepository.findAllById(request.proprietiesIds());
+            broker.setProperties(properties);
         }
-        else {
-            entity = entityManager.merge(entity);
+        if(request.leadsIds() != null){
+            List<Lead> leads = leadRepository.findAllById(request.leadsIds());
+            broker.setLeads(leads);
         }
 
-        return entity;
+        return repository.save(broker);
     }
 
     public Optional<Broker> findById(Long id) {

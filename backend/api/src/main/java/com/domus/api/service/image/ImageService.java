@@ -1,5 +1,6 @@
 package com.domus.api.service.image;
 
+import com.domus.api.dto.ImageRequest;
 import com.domus.api.model.image.Image;
 import com.domus.api.model.property.Property;
 import com.domus.api.repository.image.ImageRepository;
@@ -26,23 +27,20 @@ public class ImageService {
         this.propertyRepository = propertyRepository;
     }
 
-    public <S extends Image> S save(S entity){
-        if(entity.getId() == null){
-            if(entity.getProperty() != null){
-                Property property = propertyRepository
-                         .findById(entity.getProperty().getId())
-                        .orElseThrow(() -> new RuntimeException("Property not found"));
+    public Image save(ImageRequest request){
 
-                entity.setProperty(property);
-            }
 
-            entityManager.persist(entity);
-        }
-        else{
-            entity = entityManager.merge(entity);
+        Image image = new Image();
+        image.setUrl(request.url());
+        image.setIsPrincipal(request.isPrincipal());
+        image.setDisplayOrder(request.displayOrder());
+
+        if(request.propertyId() != null){
+            Property property = propertyRepository.findById(request.propertyId()).orElseThrow();
+            image.setProperty(property);
         }
 
-        return entity;
+        return repository.save(image);
     }
 
     public Optional<Image> findById(Long id){

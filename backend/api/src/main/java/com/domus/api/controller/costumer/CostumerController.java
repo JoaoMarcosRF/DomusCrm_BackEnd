@@ -1,5 +1,6 @@
 package com.domus.api.controller.costumer;
 
+import com.domus.api.dto.CostumerRequest;
 import com.domus.api.model.costumer.Costumer;
 import com.domus.api.model.image.Image;
 import com.domus.api.service.costumer.CostumerService;
@@ -19,9 +20,9 @@ public class CostumerController {
     }
 
     @PostMapping()
-    public ResponseEntity<Costumer> addCostumer(@RequestBody Costumer costumer){
-        service.save(costumer);
-        return ResponseEntity.ok().body(costumer);
+    public ResponseEntity<CostumerRequest> addCostumer(@RequestBody CostumerRequest request){
+        service.save(request);
+        return ResponseEntity.ok().body(request);
     }
 
     @GetMapping("/{id}")

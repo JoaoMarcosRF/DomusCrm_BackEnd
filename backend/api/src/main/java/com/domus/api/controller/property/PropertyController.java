@@ -1,5 +1,6 @@
 package com.domus.api.controller.property;
 
+import com.domus.api.dto.PropertyRequest;
 import com.domus.api.model.image.Image;
 import com.domus.api.model.property.Property;
 import com.domus.api.service.property.PropertyService;
@@ -19,9 +20,9 @@ public class PropertyController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> addProperty(@RequestBody Property property) {
-        service.save(property);
-        return ResponseEntity.ok().body(property);
+    public ResponseEntity<PropertyRequest> addProperty(@RequestBody PropertyRequest request) {
+        service.save(request);
+        return ResponseEntity.ok().body(request);
     }
 
     @GetMapping()

@@ -28,11 +28,13 @@ public class Broker extends User {
     private String CRECI;
     private String password;
 
-    @OneToMany(mappedBy = "broker", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "broker")
     @JsonIgnore
     private List<Property> properties = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "broker", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Lead> leads = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

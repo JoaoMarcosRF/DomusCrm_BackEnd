@@ -1,6 +1,7 @@
 package com.domus.api.controller.lead;
 
 
+import com.domus.api.dto.LeadRequest;
 import com.domus.api.model.image.Image;
 import com.domus.api.model.lead.Lead;
 import com.domus.api.service.lead.LeadService;
@@ -19,9 +20,9 @@ public class LeadController {
     public LeadController(LeadService service){this.service = service;}
 
     @PostMapping()
-    public ResponseEntity<Lead> addLead(@RequestBody Lead lead){
-        service.save(lead);
-        return ResponseEntity.ok().body(lead);
+    public ResponseEntity<LeadRequest> addLead(@RequestBody LeadRequest request){
+        service.save(request);
+        return ResponseEntity.ok().body(request);
     }
 
     @GetMapping("/{id}")

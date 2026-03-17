@@ -31,8 +31,7 @@ public class Address {
     //criar uma classe cep
     private String cep;
 
-    @OneToMany(mappedBy = "address")
+    @OneToOne(mappedBy = "address", optional = true)
     @JsonIgnore
-    private List<Property> property = new ArrayList<>();
-
+    private Property property;
 }

@@ -1,9 +1,12 @@
 package com.domus.api.service.costumer;
 
+import com.domus.api.dto.CostumerRequest;
 import com.domus.api.model.costumer.Costumer;
 import com.domus.api.model.image.Image;
+import com.domus.api.model.lead.Lead;
 import com.domus.api.repository.costumer.CostumerRepository;
 import com.domus.api.repository.image.ImageRepository;
+import com.domus.api.repository.lead.LeadRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -20,19 +23,29 @@ public class CostumerService {
     private EntityManager entityManager;
 
     private final CostumerRepository repository;
+    private final LeadRepository leadRepository;
 
-    public CostumerService(CostumerRepository repository){this.repository = repository;}
+    public CostumerService(CostumerRepository repository, LeadRepository leadRepository) {
+        this.repository = repository;
+        this.leadRepository = leadRepository;
+    }
 
-    public <S extends Costumer> S save(S entity){
-        if(entity.getId() == null){
-            entity.setRegisterData(LocalDate.now());
-            entityManager.persist(entity);
+    public Costumer save(CostumerRequest request) {
+
+
+        Costumer costumer = new Costumer();
+
+        costumer.setName(request.name());
+        costumer.setEmail(request.email());
+        costumer.setPhoneNumber(request.phoneNumber());
+        costumer.setCpf(request.cpf());
+
+        if(request.leadIds() != null){
+            List<Lead> leads = leadRepository.findAllById(request.leadIds());
+            costumer.setRegisterData(LocalDate.now());
         }
-        else{
-            entity = entityManager.merge(entity);
-        }
 
-        return entity;
+        return repository.save(costumer);
     }
 
     public Optional<Costumer> findById(Long id){
