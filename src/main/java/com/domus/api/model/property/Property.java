@@ -71,5 +71,7 @@ public class Property {
     }
 
     public void removeImage(Image image) {}
+
+
 }
 

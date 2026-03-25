@@ -4,6 +4,7 @@ import com.domus.api.dto.LeadRequest;
 import com.domus.api.model.image.Image;
 import com.domus.api.model.lead.Lead;
 import com.domus.api.model.property.Property;
+import com.domus.api.model.shared.Role;
 import com.domus.api.repository.broker.BrokerRepository;
 import com.domus.api.repository.image.ImageRepository;
 import com.domus.api.repository.lead.LeadRepository;
@@ -53,6 +54,8 @@ public class LeadService {
                 request.propertyId()).orElseThrow(() -> new RuntimeException("Property not found."))
         );
 
+        lead.setRole(Role.USER);
+
 
         return repository.save(lead);
     }
@@ -72,5 +75,32 @@ public class LeadService {
         }
 
         repository.deleteById(id);
+    }
+
+    public Lead update(Long id, LeadRequest request){
+        Lead lead = repository.findById(id).orElseThrow(() -> new RuntimeException("Lead not found."));
+
+        lead.setName(request.name());
+        lead.setEmail(request.email());
+        lead.setPhoneNumber(request.phoneNumber());
+        lead.setMessage(request.message());
+        lead.setLeadStatus(request.leadStatus());
+
+        lead.setBroker(brokerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Broker not found.")));
+
+        lead.setProperty(propertyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Property not found.")));
+
+        return repository.save(lead);
+    }
+
+
+    public boolean isBrokerOwner(Long LeadId, Long BrokerId) {
+        Lead lead = repository.findById(LeadId)
+                .orElseThrow(() -> new RuntimeException("Lead not found."));
+
+        return lead.getBroker().getId().equals(BrokerId);
+
     }
 }

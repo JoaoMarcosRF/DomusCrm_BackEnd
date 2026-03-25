@@ -35,4 +35,5 @@ public class Lead extends User {
     @JoinColumn(name = "broker_id", nullable = false)
     @JsonIgnore
     private Broker broker;
+
 }

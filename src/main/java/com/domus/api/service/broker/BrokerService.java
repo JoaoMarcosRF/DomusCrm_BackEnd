@@ -74,5 +74,27 @@ public class BrokerService {
         repository.deleteById(id);
     }
 
+    public Broker update(Long id, BrokerRequest request) {
+        Broker broker = repository.findById(id)
+                .orElseThrow(() ->  new RuntimeException("Property dont exists."));
+
+        broker.setName(request.name());
+        broker.setEmail(request.email());
+        broker.setPhoneNumber(request.phoneNumber());
+        broker.setPassword(request.password());
+        broker.setCRECI(request.CRECI());
+
+        if(request.proprietiesIds() != null){
+            List<Property> properties = propertyRepository.findAllById(request.proprietiesIds());
+            broker.setProperties(properties);
+        }
+
+        if(request.leadsIds() != null){
+            List<Lead> leads = leadRepository.findAllById(request.leadsIds());
+            broker.setLeads(leads);
+        }
+
+        return repository.save(broker);
+    }
 
 }

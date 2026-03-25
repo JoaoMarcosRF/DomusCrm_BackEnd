@@ -5,6 +5,7 @@ import com.domus.api.model.image.Image;
 import com.domus.api.model.property.Property;
 import com.domus.api.service.property.PropertyService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public class PropertyController {
         this.service = service;
     }
 
+
+    @PreAuthorize("hasAnyHole('ADMIN', BROKER)")
     @PostMapping()
     public ResponseEntity<PropertyRequest> addProperty(@RequestBody PropertyRequest request) {
         service.save(request);
@@ -35,6 +38,7 @@ public class PropertyController {
         return service.findById(id);
     }
 
+    @PreAuthorize("@PropertyService.isBrokerOwner(#id, authentication.principal.id) or hasAnyHole('ADMIN', 'BROKER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Optional<Property>> deleteById(@PathVariable Long id){
         Optional<Property> property = service.findById(id);
@@ -42,6 +46,7 @@ public class PropertyController {
         return ResponseEntity.ok().body(property);
     }
 
+    @PreAuthorize("@PropertyService.isBrokerOwner(#id, authentication.principal.id) or hasAnyHole('ADMIN', 'BROKER')")
     @PutMapping("/{id}")
     public ResponseEntity<PropertyRequest> updateProperty(
             @PathVariable Long id,

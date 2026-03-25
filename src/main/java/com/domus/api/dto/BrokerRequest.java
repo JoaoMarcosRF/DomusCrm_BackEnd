@@ -1,6 +1,6 @@
 package com.domus.api.dto;
 
-import com.domus.api.model.broker.BrokerRole;
+import com.domus.api.model.shared.Role;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public record BrokerRequest(
     String password,
     List<Long> proprietiesIds,
     List<Long> leadsIds,
-    BrokerRole brokerRole
+    Role role
 ) {}
 
 /*

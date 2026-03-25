@@ -22,4 +22,7 @@ public abstract class User {
     private String name;
     private String email;
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

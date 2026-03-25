@@ -30,15 +30,13 @@ public class PropertyService {
     private final ImageRepository imageRepository;
     private final LeadRepository leadRepository;
     private final BrokerRepository brokerRepository;
-    private final AddressRepository addressRepository;
 
 
-    public PropertyService(PropertyRepository repository, ImageRepository imageRepository, LeadRepository leadRepository, BrokerRepository brokerRepository, AddressRepository addressRepository) {
+    public PropertyService(PropertyRepository repository, ImageRepository imageRepository, LeadRepository leadRepository, BrokerRepository brokerRepository) {
         this.repository = repository;
         this.imageRepository = imageRepository;
         this.leadRepository = leadRepository;
         this.brokerRepository = brokerRepository;
-        this.addressRepository = addressRepository;
     }
 
     public Property save(PropertyRequest request) {
@@ -160,5 +158,13 @@ public class PropertyService {
         }
 
         return repository.save(property);
+    }
+
+
+    public boolean isBrokerOwner(Long propertyID, Long brokerId){
+        Property property = repository.findById(propertyID)
+                .orElseThrow(() -> new RuntimeException("Property not found."));
+
+        return property.getBroker().getId().equals(brokerId);
     }
 }

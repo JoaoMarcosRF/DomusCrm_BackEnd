@@ -65,4 +65,25 @@ public class ImageService {
         }
         repository.deleteById(id);
     }
+
+    public Image update(Long id, ImageRequest request){
+        Image image = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Image don't exist."));
+
+        image.setDisplayOrder(request.displayOrder());
+        image.setUrl(request.url());
+        image.setIsPrincipal(request.isPrincipal());
+
+        image.setProperty(propertyRepository.findById(request.propertyId())
+        .orElseThrow(() -> new RuntimeException("property not found.")));
+
+        return repository.save(image);
+    }
+
+    public boolean isBrokerOwner(Long ImageId, Long BrokerId) {
+        Image image = repository.findById(ImageId)
+                .orElseThrow(() -> new RuntimeException("Image don't exist."));
+
+        return image.getProperty().getBroker().getId().equals(BrokerId);
+    }
 }
