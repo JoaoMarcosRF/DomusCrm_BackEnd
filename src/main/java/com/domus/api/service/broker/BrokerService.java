@@ -10,6 +10,7 @@ import com.domus.api.repository.property.PropertyRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,20 +26,25 @@ public class BrokerService {
     private final BrokerRepository repository;
     private final PropertyRepository propertyRepository;
     private final LeadRepository leadRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public BrokerService(BrokerRepository repository, PropertyRepository propertyRepository, LeadRepository leadRepository) {
+    public BrokerService(BrokerRepository repository, PropertyRepository propertyRepository, LeadRepository leadRepository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.propertyRepository = propertyRepository;
         this.leadRepository = leadRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Broker save(BrokerRequest request) {
 
         Broker broker = new Broker();
+
+        String hashedPassword = passwordEncoder.encode(request.password());
+
         broker.setName(request.name());
         broker.setEmail(request.email());
         broker.setPhoneNumber(request.phoneNumber());
-        broker.setPassword(request.password());
+        broker.setPassword(hashedPassword);
         broker.setCRECI(request.CRECI());
 
         if(request.proprietiesIds() != null){
@@ -63,8 +69,12 @@ public class BrokerService {
 
     public void deleteById(Long id) {
 
-        if(propertyRepository.existsById(id)){
-            throw new RuntimeException("The broker owns properties linked to the property.");
+        if(repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Broker doesn't exist."))
+                .getProperties()
+                .isEmpty())
+        {
+            throw new RuntimeException("You cannot delete broker; he owns properties linked to the profile.");
         }
 
         if(!(repository.existsById(id))){
@@ -78,10 +88,12 @@ public class BrokerService {
         Broker broker = repository.findById(id)
                 .orElseThrow(() ->  new RuntimeException("Property dont exists."));
 
+        String hashedPassword = passwordEncoder.encode(request.password());
+
         broker.setName(request.name());
         broker.setEmail(request.email());
         broker.setPhoneNumber(request.phoneNumber());
-        broker.setPassword(request.password());
+        broker.setPassword(hashedPassword);
         broker.setCRECI(request.CRECI());
 
         if(request.proprietiesIds() != null){
@@ -96,5 +108,7 @@ public class BrokerService {
 
         return repository.save(broker);
     }
+
+
 
 }
