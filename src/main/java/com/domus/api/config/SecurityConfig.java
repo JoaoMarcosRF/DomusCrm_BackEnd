@@ -25,16 +25,23 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/broker/**").hasAnyRole("ADMIN", "BROKER")
+
                         .requestMatchers("/lead/**").permitAll()
                         .requestMatchers("/auths/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/property/**").permitAll()
+
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/broker/**").hasAnyRole("ADMIN", "BROKER")
                         .requestMatchers("/image/**").hasAnyRole("ADMIN", "BROKER")
-                        .anyRequest().permitAll()
+
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
+                        ).permitAll()
+
+                        .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtConfig, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .addFilterBefore(jwtConfig, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

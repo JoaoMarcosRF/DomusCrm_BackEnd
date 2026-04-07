@@ -5,7 +5,9 @@ import com.domus.api.model.broker.Broker;
 import com.domus.api.repository.broker.BrokerRepository;
 import com.domus.api.service.jwt.JwtService;
 import com.domus.api.service.password.PasswordService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthService {
     public final BrokerRepository brokerRepository;
     public final PasswordService passwordService;

@@ -2,9 +2,8 @@ package com.domus.api.service.jwt;
 
 import com.domus.api.model.broker.Broker;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,11 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    SecretKey key = Keys.hmacShaKeyFor("UNA_BERRETA_CUANDO".getBytes());
+    private final SecretKey key;
+
+    public JwtService(@Value("${jwt.secret}") String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     public String generateToken(Broker broker) {
         return Jwts.builder()
